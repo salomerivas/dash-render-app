@@ -761,5 +761,5 @@ def update_comparison_graph(season_range, player1, player2, player3):
 
 
 # Run Server
-# if __name__ == "__main__":
-#     app.run_server(host='0.0.0.0', port = 8000, debug=False)
+if __name__ == "__main__":
+    app.run_server(host='0.0.0.0', port = 8000, debug=False)
