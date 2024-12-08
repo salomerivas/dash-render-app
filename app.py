@@ -13,7 +13,6 @@ import player_analysis
 import about
 from prediction import create_first_graph
 
-
 color_palette = px.colors.qualitative.Dark24
 
 
@@ -24,7 +23,7 @@ server = app.server
 
 # Download dataset using kagglehub
 try:
-    path = kagglehub.dataset_download("philiphyde1/nfl-stats-1999-2022")
+    path = kagglehub.dataset_download("philiphyde1/nfl-stats-1999-2022") 
     week_df = pd.DataFrame()
     year_df = pd.DataFrame()
     for file_name in os.listdir(path):
@@ -172,72 +171,72 @@ normalized_df = (
     .reset_index(drop=True)
 )
 
-#def create_wr_baseline_comparison(normalized_df, selected_players, player_colors):
+def create_wr_baseline_comparison(normalized_df, selected_players, player_colors):
     # Filter for WR and calculate the baseline
- #   wr_df = normalized_df[normalized_df['position'].str.upper() == 'WR']  # Ensure 'WR' matches correctly
+   wr_df = normalized_df[normalized_df['position'].str.upper() == 'WR']  # Ensure 'WR' matches correctly
 
     # Calculate total_touchdowns and total_yards for baseline
-  #  wr_df['total_touchdowns'] = wr_df['reception_td'] + wr_df['run_td']
-   # wr_df['total_yards'] = wr_df['receiving_yards'] + wr_df['rushing_yards']
-   # wr_df['total_performance'] = (
-    #    wr_df['total_touchdowns'] + wr_df['total_yards'] + wr_df['receptions']
-   # )
+   wr_df['total_touchdowns'] = wr_df['reception_td'] + wr_df['run_td']
+   wr_df['total_yards'] = wr_df['receiving_yards'] + wr_df['rushing_yards']
+   wr_df['total_performance'] = (
+       wr_df['total_touchdowns'] + wr_df['total_yards'] + wr_df['receptions']
+   )
 
     # Group by t and calculate the baseline (mean values for each time step)
-   # baseline_df = wr_df.groupby('t').agg(total_performance=('total_performance', 'mean')).reset_index()
+   baseline_df = wr_df.groupby('t').agg(total_performance=('total_performance', 'mean')).reset_index()
 
     # Calculate total performance for selected players
-   # selected_df = normalized_df[normalized_df['player_name'].isin(selected_players)]
+   selected_df = normalized_df[normalized_df['player_name'].isin(selected_players)]
 
-   # selected_df['total_touchdowns'] = selected_df['reception_td'] + selected_df['run_td']
-   # selected_df['total_yards'] = selected_df['receiving_yards'] + selected_df['rushing_yards']
-   # selected_df['total_performance'] = (
-    #    selected_df['total_touchdowns'] + selected_df['total_yards'] + selected_df['receptions']
-    #)
+   selected_df['total_touchdowns'] = selected_df['reception_td'] + selected_df['run_td']
+   selected_df['total_yards'] = selected_df['receiving_yards'] + selected_df['rushing_yards']
+   selected_df['total_performance'] = (
+       selected_df['total_touchdowns'] + selected_df['total_yards'] + selected_df['receptions']
+    )
 
     # Merge selected players with the baseline data on 't'
-  #  comparison_df = selected_df.merge(baseline_df, on='t', suffixes=('_player', '_baseline'))
+   comparison_df = selected_df.merge(baseline_df, on='t', suffixes=('_player', '_baseline'))
 
     # Create a Plotly figure
-   # fig = go.Figure()
+   fig = go.Figure()
 
     # Plot baseline total performance
-   # fig.add_trace(go.Scatter(
-    #    x=baseline_df['t'],
-     #   y=baseline_df['total_performance'],
-      #  mode='lines',
-       # name='Baseline Total Performance',
-       # line=dict(color='gray', dash='dash'),
-       # legendgroup='baseline'
-   # ))
+   fig.add_trace(go.Scatter(
+       x=baseline_df['t'],
+       y=baseline_df['total_performance'],
+       mode='lines',
+       name='Baseline Total Performance',
+       line=dict(color='gray', dash='dash'),
+       legendgroup='baseline'
+   ))
 
     # Plot each player's performance
-   # for player_name in selected_players:
-    #    player_data = comparison_df[comparison_df['player_name'] == player_name]
-     #   fig.add_trace(go.Scatter(
-      #      x=player_data['t'],
-       #     y=player_data['total_performance_player'],
-        #    mode='lines+markers',
-         #   name=f"Total Performance: {player_name}",
-          #  line=dict(color=player_colors[player_name]),
-           # marker=dict(size=8)
-       # ))
+   for player_name in selected_players:
+       player_data = comparison_df[comparison_df['player_name'] == player_name]
+       fig.add_trace(go.Scatter(
+           x=player_data['t'],
+           y=player_data['total_performance_player'],
+           mode='lines+markers',
+           name=f"Total Performance: {player_name}",
+           line=dict(color=player_colors[player_name]),
+           marker=dict(size=8)
+       ))
 
     # Update layout for the figure
-   # fig.update_layout(
-    #    title="Comparison of Selected Players Against WR Baseline",
-     #   xaxis_title="Normalized Time (t)",
-      #  yaxis_title="Performance Metrics",
-       # template='plotly_white',
-       # legend_title='Players',
-       # hovermode='closest',
-       # height=600
-    #)
+   fig.update_layout(
+       title="Comparison of Selected Players Against WR Baseline",
+       xaxis_title="Normalized Time (t)",
+       yaxis_title="Performance Metrics",
+       template='plotly_white',
+       legend_title='Players',
+       hovermode='closest',
+       height=600
+    )
 
-#    return fig
+   return fig
 
 # Call the function to generate the graph
-#wr_baseline_graph = create_wr_baseline_comparison(normalized_df)
+# wr_baseline_graph = create_wr_baseline_comparison(normalized_df, selected_players, player_colors)
 
 # Sample data
 players = ["Justin Jefferson", "Davante Adams", "Tyreek Hill"]
@@ -671,7 +670,6 @@ def display_page(pathname):
             ]
         )
     
-    
 
 @app.callback(
     [
@@ -721,6 +719,7 @@ def update_all_graphs(season_range):
     [Input("season-slider", "value")]
 )
 def update_player_dropdowns_callback(season_range):
+    print ("HEHEHE")
     return player_analysis.update_player_dropdowns(season_range)
 
 @app.callback(
@@ -736,30 +735,30 @@ def update_comparison_graph(season_range, player1, player2, player3):
     return player_analysis.update_graph(season_range, player1, player2, player3)
 
 #
-# @app.callback(
-  #  [Output("players-dropdown", "options"), 
-   #  Output("baseline-comparison-graph", "figure")],
-    #[Input("players-dropdown", "value")]
-#)
-#def update_dropdown_and_graph(selected_players):
+@app.callback(
+   [Output("players-dropdown", "options"), 
+    Output("baseline-comparison-graph", "figure")],
+    [Input("players-dropdown", "value")]
+)
+def update_dropdown_and_graph(selected_players):
     # Populate dropdown options with unique player names
     options = [{"label": player, "value": player} for player in sorted(normalized_df['player_name'].unique())]
 
     # If no players are selected, return default options and an empty graph
- #   if not selected_players or len(selected_players) > 3:
-  #      return options, go.Figure()
+    if not selected_players or len(selected_players) > 3:
+       return options, go.Figure()
 
     # Assign dynamic colors to the selected players
-   # player_colors = {
-    #    player: color_palette[i % len(color_palette)]
-     #   for i, player in enumerate(selected_players)
-    #}
+    player_colors = {
+       player: color_palette[i % len(color_palette)]
+       for i, player in enumerate(selected_players)
+    }
 
     # Create and return the baseline comparison graph
-   # baseline_graph = create_wr_baseline_comparison(normalized_df, selected_players, player_colors)
-   # return options, baseline_graph
+    baseline_graph = create_wr_baseline_comparison(normalized_df, selected_players, player_colors)
+    return options, baseline_graph
 
 
 # Run Server
-# if __name__ == "__main__":
-#     app.run_server(host='0.0.0.0', port = 8000, debug=False)
+if __name__ == "__main__":
+    app.run_server(host='0.0.0.0', port = 8000, debug=False)
