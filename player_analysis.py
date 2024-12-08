@@ -58,7 +58,6 @@ year_df['season'] = year_df['season'].astype(int)
 year_df['total_touchdowns'] = year_df['reception_td'] + year_df['run_td']
 year_df['total_yards'] = year_df['receiving_yards'] + year_df['rushing_yards']
 
-
 def calculate_average_performance(df, season_range):
     # Filter data for the selected season range
     filtered_data = df[df['season'].between(season_range[0], season_range[1])]
